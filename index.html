@@ -711,7 +711,8 @@ function filter(term) {
 const params = new URLSearchParams(location.search);
 const initialQ = params.get('q') || '';
 q.value = initialQ;
-render(filter(initialQ));
+// render(filter(initialQ));
+  render(filter(initialQ).slice().reverse());
 
 q.addEventListener('input', (e) => {
   const v = e.target.value;
@@ -723,6 +724,7 @@ q.addEventListener('input', (e) => {
 </script>
 </body>
 </html>
+
 
 
 

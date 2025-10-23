@@ -8,6 +8,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ค้นหาหนัง • AB-miniseries (X)</title>
   <style>
+    
+    .note {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #ff1744, #ff5252);
+  color: white;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 0;
+  opacity: 0.95;
+}
+.card {
+  position: relative; /* เพื่อให้ .note จับตำแหน่งในนี้ได้ */
+}
+
     * { box-sizing: border-box; }
     body {
   margin: 0;
@@ -859,13 +877,13 @@ const MOVIES = [
     xUrl: "https://x.com/abminiseries/status/1981420494709805339"
   },
   {
-  title: "เด็กน้อยผู้โดดเดี่ยว",
-  image: "./images/Z001.png",
-  year: "2025",
-  tags: ["ซีรียต์จีนแนวตั้ง"],
-  xUrl: null, // ปิดลิงก์ให้กดไม่ได้
-  note: "อัพเดตตอน 1 ทุ่มตรง"
-}
+    title: "เด็กน้อยผู้โดดเดี่ยว",
+    image: "./images/Z001.png",
+    year: "2025",
+    tags: ["ซีรียต์จีนแนวตั้ง"],
+    xUrl: null, // ปิดลิงก์ให้กดไม่ได้
+    note: "อัพเดต 24/10/68 เวลา 13.00 น." // 👈 ข้อความที่จะแสดงบนรูป
+  }
 ];
 
 // ====== ตัวช่วย ======
@@ -873,20 +891,43 @@ const grid = document.getElementById('grid');
 const count = document.getElementById('count');
 const q = document.getElementById('q');
 
-function cardTemplate(m) {
+// function cardTemplate(m) {
+//   const tags = (m.tags || []).map(t => `<span class="pill">${t}</span>`).join('');
+//   return `
+//     <article class="card" data-title="${(m.title||'').toLowerCase()} ${((m.tags||[]).join(' ')||'').toLowerCase()} ${m.year||''}"
+//              onclick="openPost('${m.xUrl}')">
+//       <img class="thumb" loading="lazy" src="${m.image}" alt="${m.title}">
+//       <div class="meta">
+//         <h3 class="title">${m.title}</h3>
+//         <div class="sub">${m.year ? m.year+' • ' : ''}<span>คลิกเพื่อไปที่โพสต์</span></div>
+//         <div>${tags}</div>
+//       </div>
+//     </article>
+//   `;
+// }
+  function cardTemplate(m) {
   const tags = (m.tags || []).map(t => `<span class="pill">${t}</span>`).join('');
+  const clickable = m.xUrl && /^https?:\/\//.test(m.xUrl);
+  
   return `
-    <article class="card" data-title="${(m.title||'').toLowerCase()} ${((m.tags||[]).join(' ')||'').toLowerCase()} ${m.year||''}"
-             onclick="openPost('${m.xUrl}')">
-      <img class="thumb" loading="lazy" src="${m.image}" alt="${m.title}">
+    <article class="card" data-title="${(m.title||'').toLowerCase()} ${(m.tags||[]).join(' ').toLowerCase()} ${m.year||''}"
+             ${clickable ? `onclick="openPost('${m.xUrl}')"` : ''}>
+      <div style="position: relative;">
+        <img class="thumb" loading="lazy" src="${m.image}" alt="${m.title}">
+        ${m.note ? `<div class="note">${m.note}</div>` : ''}
+      </div>
       <div class="meta">
         <h3 class="title">${m.title}</h3>
-        <div class="sub">${m.year ? m.year+' • ' : ''}<span>คลิกเพื่อไปที่โพสต์</span></div>
+        <div class="sub">
+          ${m.year ? m.year+' • ' : ''}
+          <span>${clickable ? 'คลิกเพื่อไปที่โพสต์' : 'รอตอนใหม่'}</span>
+        </div>
         <div>${tags}</div>
       </div>
     </article>
   `;
 }
+
 
 function render(list) {
   grid.innerHTML = list.map(cardTemplate).join('');
@@ -921,6 +962,7 @@ q.addEventListener('input', (e) => {
 </script>
 </body>
 </html>
+
 
 
 

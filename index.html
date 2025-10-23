@@ -9,7 +9,7 @@
   <title>ค้นหาหนัง • AB-miniseries (X)</title>
   <style>
     
-    .note {
+    /* .note {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -25,14 +25,46 @@
 .card {
   position: relative; /* เพื่อให้ .note จับตำแหน่งในนี้ได้ */
 }
-
-    * { box-sizing: border-box; }
+  * { box-sizing: border-box; }
     body {
   margin: 0;
   font-family: 'Kanit', cursive;
   background: #f6f7fb;
   color: #111;
+} */
+
+    .card {
+  width: 250px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: #fff;
+  font-family: "Noto Sans Thai", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
+
+.image-container img {
+  width: 100%;
+  display: block;
+}
+
+.meta {
+  padding: 10px;
+  text-align: center;
+}
+
+.note {
+  background: #d32f2f;
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 6px 0;
+  border-top: 1px solid #eee;
+}
+
 
     header {
       position: sticky;
@@ -905,6 +937,31 @@ const q = document.getElementById('q');
 //     </article>
 //   `;
 // }
+
+  
+//   function cardTemplate(m) {
+//   const tags = (m.tags || []).map(t => `<span class="pill">${t}</span>`).join('');
+//   const clickable = m.xUrl && /^https?:\/\//.test(m.xUrl);
+  
+//   return `
+//     <article class="card" data-title="${(m.title||'').toLowerCase()} ${(m.tags||[]).join(' ').toLowerCase()} ${m.year||''}"
+//              ${clickable ? `onclick="openPost('${m.xUrl}')"` : ''}>
+//       <div style="position: relative;">
+//         <img class="thumb" loading="lazy" src="${m.image}" alt="${m.title}">
+//         ${m.note ? `<div class="note">${m.note}</div>` : ''}
+//       </div>
+//       <div class="meta">
+//         <h3 class="title">${m.title}</h3>
+//         <div class="sub">
+//           ${m.year ? m.year+' • ' : ''}
+//           <span>${clickable ? 'คลิกเพื่อไปที่โพสต์' : 'รอตอนใหม่'}</span>
+//         </div>
+//         <div>${tags}</div>
+//       </div>
+//     </article>
+//   `;
+// }
+
   function cardTemplate(m) {
   const tags = (m.tags || []).map(t => `<span class="pill">${t}</span>`).join('');
   const clickable = m.xUrl && /^https?:\/\//.test(m.xUrl);
@@ -912,9 +969,8 @@ const q = document.getElementById('q');
   return `
     <article class="card" data-title="${(m.title||'').toLowerCase()} ${(m.tags||[]).join(' ').toLowerCase()} ${m.year||''}"
              ${clickable ? `onclick="openPost('${m.xUrl}')"` : ''}>
-      <div style="position: relative;">
+      <div class="image-container">
         <img class="thumb" loading="lazy" src="${m.image}" alt="${m.title}">
-        ${m.note ? `<div class="note">${m.note}</div>` : ''}
       </div>
       <div class="meta">
         <h3 class="title">${m.title}</h3>
@@ -924,9 +980,11 @@ const q = document.getElementById('q');
         </div>
         <div>${tags}</div>
       </div>
+      ${m.note ? `<div class="note">${m.note}</div>` : ''}
     </article>
   `;
 }
+
 
 
 function render(list) {
@@ -962,6 +1020,7 @@ q.addEventListener('input', (e) => {
 </script>
 </body>
 </html>
+
 
 
 
